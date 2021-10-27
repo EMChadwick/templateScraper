@@ -56,7 +56,7 @@ for page in pageList:
         
         
 #chuck everything into a csv file
-with open('siteURLs.csv', mode = 'w') as csvFile:
+with open(domain.split('.')[0]+'_URLs.csv', mode = 'w') as csvFile:
     csvWriter = csv.writer(csvFile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     csvWriter.writerow(['Page URL'])
     for entry in pageList:
