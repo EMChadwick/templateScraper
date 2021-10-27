@@ -1,6 +1,11 @@
 """
 Scraper Template 
 @author Ed Chadwick 2021
+
+Important disclaimer:
+    This is not a perfect crawler, just a template I keep so I don't have to reinvent it every time I need one.
+    
+    Also, please don't use this for illegal shit. Thanks.
 """
 import requests, csv, re
 from bs4 import BeautifulSoup
@@ -33,22 +38,19 @@ for page in pageList:
             """
             Add checks here to look for links of a certain kind to store if that's what you're looking for.
             """
-            #this part curates the links. Works OK, but still improve it - remove parameters and things that aren't pages
-            print("checking: "+t)
+            #this part curates the links so the crawler navigates sensibly. Works OK, but still improve it 
+            #print("checking: "+t)
             if(len(t)>0):
-                
-                if (t[0] == '/'): 
-                    t = page + t
-                if (re.match('[a-z]',t[0])) and ('http' not in t):
-                    if(page.split('/')[-1] == domain)or re.search('^index',t):
-                        t = 'https://'+domain + "/" + t
-                    else:
-                        print('yeet')
-                        t = page[0: page.rindex('/')]+'/' + t
+                #get rid of variable arguments.
+                t = t.split('?')[0]
+                #if (t[0] == '/'): 
+                    #t = page + t
+                if ((re.match('[a-z]',t[0])) and ('http' not in t))or(t[0] == '/'):
+                    t = 'https://'+domain + "/" + t
                 #add appropriate links to the pagelist to be checked if they aren't there already
                 if (domain in t) and (t not in pageList) and not(any(bad in t for bad in (excludeList))):
                     pageList.append(t)
-                    print('adding '+t)
+                    #print('adding '+t)
     else:
         print("Page "+page+" returned error "+str(response.status_code))
         
