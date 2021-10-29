@@ -21,13 +21,19 @@ pageList.append(start)
 for page in pageList:
     linkList = []
     print("Searching "+page)
-    response = requests.get(page)
+    try:
+        response = requests.get(page)
+    except:
+        print("Failed to connect to "+page)
     if(response.status_code == 200):
         #get all links on the page
-        soup = BeautifulSoup(response.content, "html.parser")
-        allLinks = soup.findAll('a', href=True)
-        for l in allLinks:
-            linkList.append(l['href'])
+        try:
+            soup = BeautifulSoup(response.content, "html.parser")
+            allLinks = soup.findAll('a', href=True)
+            for l in allLinks:
+                linkList.append(l['href'])
+        except:
+            print('Parsing failed on '+page)
             
         """
         Add more BeautifulSoup queries here to grab different things from the page.
