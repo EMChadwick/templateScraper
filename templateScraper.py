@@ -11,6 +11,7 @@ import requests, csv, re
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 pageList = []
+legitList = []
 excludeList=['@'] #populate this with keywords found in URLs you don't want to check 
 start = input('Enter Starting url: ') #the starting page to branch from - currently only supports index pages
 if 'http' not in start:
@@ -24,8 +25,15 @@ for page in pageList:
     try:
         response = requests.get(page)
     except:
-        print("Failed to connect to "+page)
+        if(pageList.index(page) == 0):
+            print("Input URL "+page+" unreachable.")
+        else:
+            print("Failed to connect to "+page)
+        continue
     if(response.status_code == 200):
+        #store the links that could actually be visited.
+        if(page not in legitList):
+            legitList.append(page)
         #get all links on the page
         try:
             soup = BeautifulSoup(response.content, "html.parser")
@@ -67,6 +75,8 @@ with open(domain.split('.')[0]+'_URLs.csv', mode = 'w') as csvFile:
     csvWriter.writerow(['Page URL'])
     for entry in pageList:
         csvWriter.writerow([entry])
-
-print(len(pageList))
-print(pageList)
+if(len(legitList)>0):
+    print(legitList)
+    print("Total pages found: "+str(len(legitList)))
+    print("Unreachable links: "+str(len(pageList)-len(legitList)))
+    
