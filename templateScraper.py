@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 pageList = []
 legitList = []
 excludeList=['@'] #populate this with keywords found in URLs you don't want to check 
-start = input('Enter Starting url: ') #the starting page to branch from - currently only supports index pages
+start = input('Enter Starting url: ') #the starting page to branch from
 if 'http' not in start:
     start = 'https://' + start
 domain = urlparse(start).netloc
