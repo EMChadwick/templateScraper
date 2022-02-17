@@ -4,8 +4,6 @@ Scraper Template
 
 Important disclaimer:
     This is not a perfect crawler, just a template I keep so I don't have to reinvent it every time I need one.
-    
-    Also, please don't use this for illegal shit. Thanks.
 """
 import requests, csv, re
 from bs4 import BeautifulSoup
